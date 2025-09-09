@@ -281,10 +281,11 @@ class AudioToMelSpectrogramPreprocessor(AudioPreprocessor, Exportable):
         )
 
     def input_example(self, max_batch: int = 1, max_dim: int = 32000, min_length: int = 200):
+        dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         batch_size = 1 # torch.randint(low=1, high=max_batch, size=[1]).item()
-        max_length = torch.randint(low=min_length, high=max_dim, size=[1]).item()
-        signals = torch.rand(size=[batch_size, max_length]) * 2 - 1
-        lengths = torch.randint(low=min_length, high=max_dim, size=[batch_size])
+        max_length = torch.randint(low=min_length, high=max_dim, size=[1], device=dev).item()
+        signals = torch.rand(size=[batch_size, max_length], device=dev) * 2 - 1
+        lengths = torch.randint(low=min_length, high=max_dim, size=[batch_size], device=dev)
         lengths[0] = max_length
         return signals, lengths
 

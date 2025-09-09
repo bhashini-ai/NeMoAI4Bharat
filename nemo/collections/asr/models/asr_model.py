@@ -181,7 +181,7 @@ class ExportableEncDecModel(Exportable):
 
     @property
     def input_module(self):
-        return self.encoder
+        return self.preprocessor
 
     @property
     def output_module(self):
@@ -215,7 +215,13 @@ class ExportableEncDecModel(Exportable):
         Returns:
             the output of the model
         """
-        enc_fun = getattr(self.input_module, 'forward_for_export', self.input_module.forward)
+        preprocessor_fun = getattr(self.preprocessor, 'forward_for_export', self.preprocessor.forward)
+        input, length = preprocessor_fun(input_signal=input, length=length)
+        if isinstance(input, tuple):
+            input = input[0]
+            length = length[0]
+
+        enc_fun = getattr(self.encoder, 'forward_for_export', self.encoder.forward)
         if cache_last_channel is None:
             encoder_output = enc_fun(audio_signal=input, length=length)
             if isinstance(encoder_output, tuple):

@@ -996,7 +996,7 @@ class EncDecRNNTModel(ASRModel, ASRModuleMixin, ExportableEncDecModel, ASRTransc
 
     # EncDecRNNTModel is exported in 2 parts
     def list_export_subnets(self):
-        return ['encoder', 'decoder_joint']
+        return ['preprocessor', 'encoder', 'decoder_joint']
 
     # for export
     @property

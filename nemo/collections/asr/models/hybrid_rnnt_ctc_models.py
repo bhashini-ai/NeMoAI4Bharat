@@ -829,7 +829,7 @@ class EncDecHybridRNNTCTCModel(EncDecRNNTModel, ASRBPEMixin, InterCTCMixin):
     # EncDecRNNTModel is exported in 2 parts
     def list_export_subnets(self):
         if self.cur_decoder == 'rnnt':
-            return ['encoder', 'decoder_joint']
+            return ['preprocessor', 'encoder', 'decoder_joint']
         else:
             return ['self']
 
