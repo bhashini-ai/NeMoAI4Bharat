@@ -215,6 +215,10 @@ class ExportableEncDecModel(Exportable):
         Returns:
             the output of the model
         """
+        device = next(self.parameters()).device
+        input = input.to(device)
+        length = length.to(device)
+
         preprocessor_fun = getattr(self.preprocessor, 'forward_for_export', self.preprocessor.forward)
         input, length = preprocessor_fun(input_signal=input, length=length)
         if isinstance(input, tuple):
